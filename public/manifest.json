@@ -1,0 +1,22 @@
+{
+    "name": "Italic Tips",
+    "short_name": "ItalicTips",
+    "description": "Daily football predictions and betting tips.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/italic.jpg",
+            "sizes": "450x450",
+            "type": "image/jpg"
+        },
+        {
+            "src": "/odds.png",
+            "sizes": "600x600",
+            "type": "image/png"
+        }
+    ]
+}
