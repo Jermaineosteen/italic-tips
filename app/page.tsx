@@ -1,6 +1,6 @@
-import Footer from "@/components/Footer";
+import { Fragment } from 'react';
+
 import Hero from "@/components/Hero";
-import Navbar from "@/components/Navbar";
 
 import PredictionCard from "@/components/PredictionCard";
 import ResultsSummary from "@/components/ResultsSummary";
@@ -13,8 +13,8 @@ import { createClient } from "@/lib/supabase/server";
 
 import CategoryFilter from "@/components/CategoryFilter";
 import VisitorTracker from "@/components/VisitorTracker";
-import InstallAppBanner from "@/components/InstallAppBanner";
 import JoinTelegramModal from "@/components/JoinTelegramModal";
+import Advertisement from "@/components/Advertisement";
 
 export default async function Home({
   searchParams,
@@ -77,15 +77,15 @@ export default async function Home({
 
   return (
     <>
-      <Navbar />
-
       <Hero
-        title={settings.hero_title}
-        subtitle={settings.hero_subtitle}
+        title={settings?.hero_title}
+        subtitle={settings?.hero_subtitle}
         telegramUrl={
-          settings.telegram_url
+          settings?.telegram_url
         }
       />
+
+      <Advertisement position="hero" />
 
       <JoinTelegramModal
         telegramUrl={settings.telegram_url}
@@ -126,14 +126,23 @@ export default async function Home({
           "
         >
           {predictions?.length ? (
-            predictions.map(
-              (prediction) => (
+            predictions.map((prediction, index) => (
+              <Fragment key={prediction.id}>
                 <PredictionCard
                   key={prediction.id}
                   prediction={
                     prediction
                   }
                 />
+
+                {index === 4  && (
+                  <div className="md:col-span-2 lg:col-span-3">
+                    <Advertisement
+                      position="between_predictions"
+                    />
+                  </div>
+                )}
+              </Fragment>
               )
             )
           ) : (
@@ -153,15 +162,14 @@ export default async function Home({
             </div>
           )}
         </div>
+
       </section>
 
-      {/* <TelegramCTA /> */}
+      <TelegramCTA telegramUrl={settings.telegram_url}/>
 
       {/* <InstallAppBanner /> */}
 
       <VisitorTracker />
-
-      <Footer />
     </>
   );
 }

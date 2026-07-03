@@ -108,27 +108,33 @@ export async function updatePrediction(formData: FormData) {
 export async function updateSettings(formData: FormData) {
     const supabase = await createClient();
 
-    const { data: { user },} = await supabase.auth.getUser();
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
         throw new Error("Unauthorized");
     }
 
-    const { data: settings } = 
-        await supabase
-            .from("settings")
-            .select("id")
-            .single();
+    const { data: settings } = await supabase
+        .from("settings")
+        .select("id")
+        .single();
 
-    await supabase
+    const { error } = await supabase
         .from("settings")
         .update({
-            settings: formData.get("site_title"),
+            site_title: formData.get("site_title"),
             hero_title: formData.get("hero_title"),
             hero_subtitle: formData.get("hero_subtitle"),
             telegram_url: formData.get("telegram_url"),
         })
         .eq("id", settings?.id);
+
+    if (error) {
+        console.error(error);
+        throw new Error(error.message);
+    }
 
     revalidatePath("/");
     revalidatePath("/admin");

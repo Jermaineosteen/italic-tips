@@ -10,22 +10,20 @@ import GrowthStats from "@/components/GrowthStats";
 import WeeklyGrowth from "@/components/WeeklyGrowth";
 import AdminStats from "@/components/AdminStats";
 import Link from "next/link";
+import { requireAdmin } from "@/lib/admin";
+
+import CreateAdvertisementForm from "@/components/CreateAdvertisementForm";
+import AdvertisementCard from "@/components/AdvertisementCard";
 
 export default async function AdminPage() {
+    await requireAdmin();
+    
     const supabase = await createClient();
 
-    const { data: { user}, } = await supabase.auth.getUser();
-
-    if (!user) {
-        redirect("/admin/login");
-    }
-
-    if (
-        user.email !==
-        "admin@italictips.com"
-    ) {
-        redirect("/admin/login");
-    }
+    const { data: advertisements } = await supabase
+        .from("advertisements")
+        .select("*")
+        .order("priority", { ascending: true });
 
     const { data: predictions } = await supabase
         .from("predictions")
@@ -110,6 +108,19 @@ export default async function AdminPage() {
                 
 
                 <CreatePredictionForm/>
+
+                <div className="mt-10 space-y6">
+                    <CreateAdvertisementForm />
+                </div>
+
+                <div>
+                    {advertisements?.map((advertisement) => (
+                        <AdvertisementCard
+                            key={advertisement.id}
+                            advertisement={advertisement}
+                        />
+                    ))}
+                </div>
 
                 <div className="mt-10">
                     <SettingsForm settings={settings}/>

@@ -1,3 +1,5 @@
+import Advertisement from "./Advertisement";
+
 export default function ResultsSummary({
     won, lost, voided
 }: {won: number, lost: number, voided: number}) {
@@ -12,6 +14,8 @@ export default function ResultsSummary({
                 <h2 className="text-3xl font-bold mb-6">
                     Recent Results
                 </h2>
+
+                <Advertisement position="history"/>
 
                 <div className="grid md:grid-cols-4 gap-4">
                     <div className="border rounded-xl p-5">
@@ -42,6 +46,7 @@ export default function ResultsSummary({
                         </h3>
                     </div>
                 </div>
+
             </div>
         </section>
     )

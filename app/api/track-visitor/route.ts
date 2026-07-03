@@ -5,7 +5,24 @@ import { createClient } from "../../../lib/supabase/server";
 export async function POST(
     request: NextRequest
 ) {
-    const { visitorId } = await request.json();
+    let visitorId: string | undefined;
+
+    try {
+        console.log(request.method);
+        console.log(request.headers.get("Content-Type"));
+        const body = await request.json();
+        visitorId = body?.visitorId;
+        console.log("visitorId", visitorId);
+    } catch (error) {
+        visitorId = undefined;
+    }
+
+    if (!visitorId) {
+        return Response.json(
+            { error: "Missing visitorId" },
+            { status: 400 }
+        );
+    }
 
     const supabase = await createClient();
 
@@ -21,31 +38,6 @@ export async function POST(
     const start = `${today}T00:00:00`;
 
     const end = `${today}T23:59:59`;
-
-    // const { data: stat } = 
-    //     await supabase 
-    //         .from("daily_stats")
-    //         .select("*")
-    //         .eq("stat_date", today)
-    //         .maybeSingle();
-
-
-    // if (!stat) {
-    //     await supabase
-    //         .from("daily_stats")
-    //         .insert({
-    //             stat_date: today,
-    //             visitors: 1,
-    //             telegram_clicks: 0,
-    //         });
-    // } else {
-    //     await supabase
-    //         .from("daily_stats")
-    //         .update({
-    //             visitors: stat.visitors + 1,
-    //         })
-    //         .eq("id", stat.id);
-    // }
 
     const { data: existing } = 
         await supabase
