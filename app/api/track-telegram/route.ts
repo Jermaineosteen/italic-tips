@@ -4,17 +4,21 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request: NextRequest) {
     const supabase = await createClient();
-
-    const { visitorId } = await request.json();
+    let visitorId: string | null = null;
+    try {
+        const body = await request.json();
+        visitorId = body.visitorId;
+    } catch {
+        return NextResponse.json(
+        {error: 'Invalid JSON body'},
+        {status: 400}
+        );
+    }
 
     if (!visitorId) {
         return NextResponse.json(
-            {
-                error: "visitorId is required",
-            },
-            {
-                status: 400
-            }
+            {error: "visitorId is required",},
+            {status: 400}
         )
     }
 
@@ -36,30 +40,6 @@ export async function POST(request: NextRequest) {
             target_date: today
         }
     )
-
-    // const { data: stat } = 
-    //     await supabase
-    //         .from("daily_stats")
-    //         .select("*")
-    //         .eq("stat_date", today)
-    //         .maybeSingle();
-
-    // // if (!stat) {
-    //     await supabase
-    //         .from("daily_stats")
-    //         .insert({
-    //             stat_date: today,
-    //             visitors: 0,
-    //             telegram_clicks: 1
-    //         })
-    // } else {
-    //     await supabase
-    //         .from("daily_stats")
-    //         .update({
-    //             telegram_clicks: stat.telegram_clicks + 1
-    //         })
-    //         .eq("id", stat.id);
-    // }
 
     return NextResponse.json({
         success: true

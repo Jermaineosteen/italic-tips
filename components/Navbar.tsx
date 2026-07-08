@@ -90,18 +90,27 @@ export default function Navbar({telegramUrl}: NavbarProps) {
             </Link>
 
             {/* hamburger */}
-            <button
+            {/* <button
               onClick={() => setOpen(!open)}
               className="md:hidden text-white text-xl"
             >
               ☰
+            </button> */}
+
+            <button
+              onClick={() => setOpen(!open)}
+              className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1"
+            >
+              <span className={`w-6 h-0.5 bg-white rounded transition-all duration-300 ${open ? "rotate-45 translate-y-1.5" : ""}`}/>
+              <span className={`w-6 h-0.5 bg-white rounded transition-all duration-300 ${open ? "opacity-0" : ""}`}/>
+              <span className={`w-6 h-0.5 bg-white rounded transition-all duration-300 ${open ? "-rotate-45 -translate-y-1.5" : ""}`}/>
             </button>
           </div>
         </div>
 
-        {/* mobile menu */}
-        {open && (
-          <div className="md:hidden pb-4 flex flex-col gap-2">
+
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-80 opacity-100 translate-y-0 pb-4' : 'max-h-0 opacity-0 -translate-y-2'}`}>
+          <div className="flex flex-col gap-2 pt-2">
             {links.map((link) => {
               const active = pathname === link.href;
               return (
@@ -109,21 +118,14 @@ export default function Navbar({telegramUrl}: NavbarProps) {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`
-                    px-4 py-3 rounded-xl
-                    ${
-                      active
-                      ? "bg-gradient-to-r from-emerald-500 to-cyan-500 text-white"
-                      : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                    }
-                    `}
+                  className={`px-4 py-3 rounded-xl rounded-xl transition-all duration-200 ${active ? "bg-gradient-to-r from-emerald-500 to-cyan-500 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white"}`}
                 >
                   {link.label}
                 </Link>
               )
             })}
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );
