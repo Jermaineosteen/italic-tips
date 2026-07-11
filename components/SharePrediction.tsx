@@ -10,11 +10,11 @@ export default function SharePrediction({prediction}: SharePredictionProps) {
         const text = `
         ${prediction.match_name}
 
+        Odds:
+        ${prediction.country}
+
         Prediction:
         ${prediction.prediction}
-
-        Odds:
-        ${prediction.odds}
 
         Shared from Italic Tips
         `;

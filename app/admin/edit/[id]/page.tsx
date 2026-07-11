@@ -66,7 +66,7 @@ export default async function EditPrediction({
 
             <input
               name="market"
-              defaultValue={prediction.market}
+              defaultValue={prediction.country}
               placeholder="Market"
               className="w-full p-4 rounded-xl border border-slate-300 bg-slate-50"
             />
@@ -75,15 +75,6 @@ export default async function EditPrediction({
               name="prediction"
               defaultValue={prediction.prediction}
               placeholder="Prediction"
-              className="w-full p-4 rounded-xl border border-slate-300 bg-slate-50"
-            />
-
-            <input
-              type="number"
-              step="0.01"
-              name="odds"
-              defaultValue={prediction.odds}
-              placeholder="Odds"
               className="w-full p-4 rounded-xl border border-slate-300 bg-slate-50"
             />
 
