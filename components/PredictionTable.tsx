@@ -32,7 +32,7 @@ export default function PredictionTable({predictions}: PredictionTableProps) {
                             </h3>
 
                             <p className="text-sm text-slate-500 mt-1">
-                                {prediction.market}
+                                {prediction.country}
                             </p>
                         </div>
 
@@ -57,9 +57,6 @@ export default function PredictionTable({predictions}: PredictionTableProps) {
                                 Odds
                             </p>
 
-                            <p>
-                                {prediction.odds}
-                            </p>
                         </div>
 
                         <StatusBadge status={prediction.status}/>
