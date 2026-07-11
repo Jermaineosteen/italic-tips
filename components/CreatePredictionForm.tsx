@@ -28,15 +28,14 @@ export default function CreatePredictionForm() {
             </select>
 
             <input
-                name="match_name"
-                placeholder="Arsenal vs Chelsea"
+                name="country"
+                placeholder="Country"
                 required
                 className="w-full border p-4 rounded-xl border-slate-300 bg-slate-50 focus:border-emerald-500 focus:ring-emerald-200 outline-none"
             />
-
             <input
-                name="market"
-                placeholder="market name"
+                name="match_name"
+                placeholder="Arsenal vs Chelsea"
                 required
                 className="w-full border p-4 rounded-xl border-slate-300 bg-slate-50 focus:border-emerald-500 focus:ring-emerald-200 outline-none"
             />
@@ -48,18 +47,12 @@ export default function CreatePredictionForm() {
                 className="w-full border p-4 rounded-xl border-slate-300 bg-slate-50 focus:border-emerald-500 focus:ring-emerald-200 outline-none"
             />
 
-            <input
-                name="odds"
-                type="number"
-                step="0.01"
-                required
-                className="w-full border p-4 rounded-xl border-slate-300 bg-slate-50 focus:border-emerald-500 focus:ring-emerald-200 outline-none"
-            />
 
             <input
                 type="datetime-local"
                 name="kickoff_time"
                 required
+                placeholder="Kickoff Time"
                 className="w-full border p-4 rounded-xl border-slate-300 bg-slate-50 focus:border-emerald-500 focus:ring-emerald-200 outline-none"
             />
 

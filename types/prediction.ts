@@ -1,9 +1,8 @@
 export interface Prediction {
   id: string;
   match_name: string;
-  market: string;
+  country: string;
   prediction: string;
-  odds: number;
   kickoff_time: string;
   status: "pending" | "won" | "lost" | "void";
   category: "football" | "basketball" | "tennis";

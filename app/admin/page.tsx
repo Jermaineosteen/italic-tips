@@ -14,6 +14,7 @@ import { requireAdmin } from "@/lib/admin";
 
 import CreateAdvertisementForm from "@/components/CreateAdvertisementForm";
 import AdvertisementCard from "@/components/AdvertisementCard";
+import AdminAccordion from "@/components/AdminAccordion";
 
 export default async function AdminPage() {
     await requireAdmin();
@@ -105,50 +106,97 @@ export default async function AdminPage() {
                         <LogoutButton/>
                     </div>
                 </div>
-                
 
-                <CreatePredictionForm/>
+                <AdminAccordion
+                    sections={[
+                        {
+                            id: "stats",
+                            title: "Dashboard Statistics",
+                            icon: "📊",
+                            children: (
+                                <AdminStats
+                                    total={total}
+                                    won={won}
+                                    lost={lost}
+                                    pending={pending}
+                                    winRate={winRate}
+                                />
+                            )
+                        },
+                        
+                        {
+                            id: "prediction",
+                            title: "Create Prediction",
+                            icon: "➕",
+                            children: (
+                                <CreatePredictionForm/>
+                            )
+                        },
 
-                <div className="mt-10 space-y6">
-                    <CreateAdvertisementForm />
-                </div>
+                        {
+                            id: "ads",
+                            title: "Advertisements",
+                            icon: "📢",
+                            children: (
+                                <>
+                                    <CreateAdvertisementForm/>
+                                    <div className="mt-6 space-y-4">
+                                        {advertisements?.map((ad) => (
+                                            <AdvertisementCard
+                                                key={ad.id}
+                                                advertisement={ad}
+                                            />
+                                        ))}
+                                    </div>
+                                </>
+                            )
+                        },
 
-                <div>
-                    {advertisements?.map((advertisement) => (
-                        <AdvertisementCard
-                            key={advertisement.id}
-                            advertisement={advertisement}
-                        />
-                    ))}
-                </div>
+                        {
+                            id: "settings",
+                            title: "Settings",
+                            icon: "⚙️",
+                            children: (
+                                <SettingsForm
+                                    settings={settings}
+                                />
+                            )
+                        },
 
-                <div className="mt-10">
-                    <SettingsForm settings={settings}/>
-                </div>
+                        {
+                            id: "predictions",
+                            title: "Manage Predictions",
+                            icon: "📝",
+                            children: (
+                                <PredictionTable
+                                    predictions={predictions || []}
+                                />
+                            )
+                        },
 
-                <div>
-                    <PredictionTable
-                        predictions={
-                            predictions || []
+                        {
+                            id: "weekly",
+                            title: "Weekly Growth",
+                            icon: "📈",
+                            children: (
+                                <WeeklyGrowth
+                                    stats={weeklyStats || []}
+                                />
+                            )
+                        },
+
+                        {
+                            id: "visitors",
+                            title: "Visitors",
+                            icon: "👥",
+                            children: (
+                                <GrowthStats
+                                    visitors={todayStats?.visitors || 0}
+                                    telegramClicks={todayStats?.telegram_clicks || 0}
+                                />
+                            )
                         }
-                    />
-                </div>
-
-                <AdminStats
-                    total={total}
-                    won={won}
-                    lost={lost}
-                    pending={pending}
-                    winRate={winRate}
-                />
-
-                <WeeklyGrowth
-                    stats={weeklyStats || []}
-                />
-
-                <GrowthStats
-                    visitors={todayStats?.visitors || 0}
-                    telegramClicks={todayStats?.telegram_clicks || 0}
+                    ]}
                 />
             </div>
         </div>

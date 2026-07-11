@@ -16,9 +16,8 @@ export async function createPrediction(formData: FormData) {
         .from("predictions")
         .insert({
             match_name: formData.get("match_name"),
-            market: formData.get("market"),
+            country: formData.get("country"),
             prediction: formData.get("prediction"),
-            odds: Number(formData.get("odds")),
             category: formData.get("category"),
             kickoff_time: formData.get("kickoff_time"),
             featured: formData.get("featured") === "on",

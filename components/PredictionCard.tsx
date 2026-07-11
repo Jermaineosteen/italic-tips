@@ -40,7 +40,7 @@ export default function PredictionCard({
             text-slate-500
             "
           >
-            {prediction.market}
+            {prediction.country}
           </p>
         </div>
 
@@ -96,21 +96,6 @@ export default function PredictionCard({
         justify-between
         "
       >
-        <div>
-          <p className="text-sm text-slate-500">
-            Odds
-          </p>
-
-          <p
-            className="
-            text-xl
-            font-bold
-            text-emerald-600
-            "
-          >
-            {prediction.odds}
-          </p>
-        </div>
 
         <span
           className={`
