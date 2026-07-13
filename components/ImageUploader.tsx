@@ -28,7 +28,6 @@ export default function ImageUploader({
         });
 
         const data = await response.json();
-        console.log("upload response", data);
         setUploading(false);
         onUpload(data.url ?? "");
     }

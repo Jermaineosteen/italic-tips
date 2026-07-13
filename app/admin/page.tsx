@@ -15,6 +15,7 @@ import { requireAdmin } from "@/lib/admin";
 import CreateAdvertisementForm from "@/components/CreateAdvertisementForm";
 import AdvertisementCard from "@/components/AdvertisementCard";
 import AdminAccordion from "@/components/AdminAccordion";
+import DeleteAllPredictionsButton from "@/components/DeleteAllPredictionsButton";
 
 export default async function AdminPage() {
     await requireAdmin();
@@ -168,9 +169,12 @@ export default async function AdminPage() {
                             title: "Manage Predictions",
                             icon: "📝",
                             children: (
-                                <PredictionTable
-                                    predictions={predictions || []}
-                                />
+                                <div className="space-y-5">
+                                    <div className="flex justify-end">
+                                        <DeleteAllPredictionsButton total={total}/>
+                                    </div>
+                                    <PredictionTable predictions={predictions || []}/>
+                                </div>
                             )
                         },
 

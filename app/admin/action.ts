@@ -12,7 +12,7 @@ export async function createPrediction(formData: FormData) {
         throw new Error("Unauthorized");
     }
 
-    const { data, error } = await supabase
+    const { error } = await supabase
         .from("predictions")
         .insert({
             match_name: formData.get("match_name"),
@@ -28,7 +28,6 @@ export async function createPrediction(formData: FormData) {
 
     if (error) {
         throw new Error(error.message);
-        console.log(error);
     }
 
     revalidatePath("/");
@@ -92,9 +91,10 @@ export async function updatePrediction(formData: FormData) {
         .from("predictions")
         .update({
             match_name: formData.get("match_name"),
-            market: formData.get("market"),
+            country: formData.get("country"),
             prediction: formData.get("prediction"),
-            odds: Number(formData.get("odds")),
+            category: formData.get("category"),
+            featured: formData.get("featured") === "on",
             kickoff_time: formData.get("kickoff_time"),
             status: formData.get("status"),
         })
@@ -136,5 +136,28 @@ export async function updateSettings(formData: FormData) {
     }
 
     revalidatePath("/");
+    revalidatePath("/admin");
+}
+
+export async function deleteAllPredictions() {
+    const supabase = await createClient();
+
+    const { data: { user }, } = await supabase.auth.getUser();
+
+    if (!user) {
+        throw new Error("Unauthorized");
+    }
+
+    const { error } = await supabase
+        .from("predictions")
+        .delete()
+        .neq("id", 0);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/");
+    revalidatePath("history");
     revalidatePath("/admin");
 }

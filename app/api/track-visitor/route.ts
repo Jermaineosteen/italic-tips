@@ -8,11 +8,8 @@ export async function POST(
     let visitorId: string | undefined;
 
     try {
-        console.log(request.method);
-        console.log(request.headers.get("Content-Type"));
         const body = await request.json();
         visitorId = body?.visitorId;
-        console.log("visitorId", visitorId);
     } catch (error) {
         visitorId = undefined;
     }

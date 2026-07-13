@@ -9,36 +9,18 @@ export default function PredictionCard({
 }) {
   return (
     <div
-      className="
-      bg-white
-      rounded-2xl
-      border border-slate-200
-      p-6
-      shadow-sm
-      hover:shadow-2xl
-      hover:-translate-y-1
-      transition-all
-      duration-300
-      "
+      className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3
-            className="
-            text-lg
-            font-bold
-            text-slate-900
-            "
+            className="text-lg font-bold text-slate-900"
           >
             {prediction.match_name}
           </h3>
 
           <p
-            className="
-            mt-2
-            text-sm
-            text-slate-500
-            "
+            className="mt-2 text-smtext-slate-500"
           >
             {prediction.country}
           </p>
@@ -46,15 +28,7 @@ export default function PredictionCard({
 
         {prediction.featured && (
           <div
-            className="
-            h-10
-            w-10
-            rounded-full
-            bg-amber-100
-            flex
-            items-center
-            justify-center
-            "
+            className="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center"
           >
             ⭐
           </div>

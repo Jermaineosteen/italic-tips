@@ -15,17 +15,26 @@ import CategoryFilter from "@/components/CategoryFilter";
 import VisitorTracker from "@/components/VisitorTracker";
 import JoinTelegramModal from "@/components/JoinTelegramModal";
 import Advertisement from "@/components/Advertisement";
+import Link from 'next/link';
+import Pagination from '@/components/Pagination';
+import ScrollToPredictions from '@/components/ScrollToPredictions';
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: Promise<{
     category?: string;
+    page: string;
   }>;
 }) {
   const params = await searchParams;
 
   const category = params.category || "all";
+
+  const currentPage = Number(params.page || "1");
+  const pageSize = 8;
+  const from = (currentPage - 1) * pageSize;
+  const to = from + pageSize - 1;
 
   const settings = await getSettings();
 
@@ -33,7 +42,7 @@ export default async function Home({
 
   let query = supabase
     .from("predictions")
-    .select("*")
+    .select("*", { count: "exact" })
     .order("kickoff_time", {
       ascending: true,
     });
@@ -45,8 +54,11 @@ export default async function Home({
     );
   }
 
-  const { data: predictions } =
-    await query;
+  query = query.range(from, to);
+
+  const { data: predictions, count } = await query;
+
+  const totalPages = Math.ceil((count || 0) / pageSize);
 
   const { data: featured } =
     await createSupabaseServerClient()
@@ -105,7 +117,7 @@ export default async function Home({
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <section id="predictions" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="flex flex-col gap-4 mb-8 md:flex-row md:items-center md:justify-between">
           <h2 className="text-3xl font-bold">
             Today's Predictions
@@ -163,7 +175,15 @@ export default async function Home({
           )}
         </div>
 
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          category={category}
+        />
+
       </section>
+
+      <ScrollToPredictions/>
 
       <TelegramCTA telegramUrl={settings.telegram_url}/>
 
