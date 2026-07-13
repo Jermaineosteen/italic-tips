@@ -9,18 +9,18 @@ export default function PredictionCard({
 }) {
   return (
     <div
-      className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+      className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
     >
-      <div className="flex items-start justify-between gap-3">
+      {/* <div className="flex items-start justify-between gap-3">
         <div>
           <h3
-            className="text-lg font-bold text-slate-900"
+            className="text-base font-semibold text-slate-900"
           >
             {prediction.match_name}
           </h3>
 
           <p
-            className="mt-2 text-smtext-slate-500"
+            className="mt-2 text-sm text-slate-500"
           >
             {prediction.country}
           </p>
@@ -28,52 +28,43 @@ export default function PredictionCard({
 
         {prediction.featured && (
           <div
-            className="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center"
+            className="h-7 w-7 text-sm rounded-full bg-amber-100 flex items-center justify-center"
           >
             ⭐
           </div>
         )}
+      </div> */}
+
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <h3 className="text-base font-semibold text-slate-900 leading-tight">
+            {prediction.match_name}
+          </h3>
+
+          <p className="mt-1 text-sm text-slate-500">
+            {prediction.country}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <SharePrediction prediction={prediction} />
+
+          {prediction.featured && (
+            <div className="h-7 w-7 rounded-full bg-amber-100 flex items-center justify-center text-sm">
+              ⭐
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-3 flex items-center justify-between">
         <CategoryBadge
           category={prediction.category}
         />
-      </div>
-
-      <div
-        className="
-        mt-5
-        rounded-xl
-        bg-gradient-to-r
-        from-emerald-50
-        to-cyan-50
-        p-4
-        "
-      >
-        <p
-          className="
-          text-lg
-          font-bold
-          text-slate-900
-          "
-        >
-          {prediction.prediction}
-        </p>
-      </div>
-
-      <div
-        className="
-        mt-5
-        flex
-        items-center
-        justify-between
-        "
-      >
 
         <span
           className={`
-          px-3
+          px-2.5
           py-1
           rounded-full
           text-xs
@@ -96,16 +87,36 @@ export default function PredictionCard({
 
       <div
         className="
-        mt-5
-        pt-4
-        border-t
-        border-slate-200
+        mt-3
+        rounded-xl
+        bg-gradient-to-r
+        from-emerald-50
+        to-cyan-50
+        p-3
         "
       >
-        <SharePrediction
-          prediction={prediction}
-        />
+        <p
+          className="
+          text-base
+          font-bold
+          text-slate-900
+          "
+        >
+          {prediction.prediction}
+        </p>
       </div>
+
+      {/* <div
+        className="
+        mt-3
+        flex
+        items-center
+        justify-between
+        "
+      >
+
+        
+      </div> */}
     </div>
   );
 }

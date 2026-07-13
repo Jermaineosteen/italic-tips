@@ -1,6 +1,8 @@
 "use client"
 
 import { Prediction } from "@/types/prediction";
+import { Share } from "next/font/google";
+import { ShareIcon } from "@heroicons/react/24/outline";
 
 interface SharePredictionProps {
     prediction: Prediction;
@@ -8,23 +10,24 @@ interface SharePredictionProps {
 export default function SharePrediction({prediction}: SharePredictionProps) {
     async function share() {
         const text = `
-        ${prediction.match_name}
+        ⚽ ${prediction.match_name}
 
-        Odds:
-        ${prediction.country}
+        🌍 ${prediction.country}
 
-        Prediction:
-        ${prediction.prediction}
+        🎯 ${prediction.prediction}
 
-        Shared from Italic Tips
-        `;
+        #ItalicTips`;
 
         try {
             if (navigator.share) {
-                await navigator.share({text});
+                await navigator.share({
+                    title: prediction.match_name,
+                    text,
+                    url: window.location.origin
+                });
             } else {
                 await navigator.clipboard.writeText(text);
-                alert("Copied to clipboard");
+                alert("Prediction copied!");
             }
         } catch (err) {
             console.error(err);
@@ -34,10 +37,10 @@ export default function SharePrediction({prediction}: SharePredictionProps) {
     return (
         <button
             onClick={share}
-            className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white text-sm font-medium shadow-md shadow-emerald-500/20 transition-all duration-200 hover:scale-105 active:scale-95"
+            className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-slate-100 transition"
+            title="Share Prediction"
         >
-            <span>📤</span>
-            <span>Share</span>
+            <ShareIcon className="h-5 w-5 text-slate-600"/>
         </button>
     )
 }

@@ -32,7 +32,7 @@ export default async function Home({
   const category = params.category || "all";
 
   const currentPage = Number(params.page || "1");
-  const pageSize = 8;
+  const pageSize = 10;
   const from = (currentPage - 1) * pageSize;
   const to = from + pageSize - 1;
 
