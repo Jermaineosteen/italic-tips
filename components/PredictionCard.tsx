@@ -45,15 +45,16 @@ export default function PredictionCard({
           py-1
           rounded-full
           font-semibold
+          text-xs
           capitalize
           ${
             prediction.status === "won"
-              ? "bg-green-500 text-white text-lg"
+              ? "bg-green-500 text-white"
               : prediction.status === "lost"
-              ? "bg-red-100 text-red-700 text-xs"
+              ? "bg-red-100 text-red-700"
               : prediction.status === "void"
-              ? "bg-yellow-100 text-yellow-700 text-xs"
-              : "bg-slate-100 text-slate-700 text-xs"
+              ? "bg-yellow-100 text-yellow-700"
+              : "bg-slate-100 text-slate-700"
           }
           `}
         >

@@ -234,3 +234,25 @@ export async function deleteAllResult() {
     revalidatePath("/history")
     revalidatePath("/admin");
 }
+
+export async function deleteAllResults() {
+    const supabase = await createClient();
+
+    const { data: { user }} = await supabase.auth.getUser();
+
+    if (!user) {
+        throw new Error("Unauthorized");
+    }
+
+    const { error } = await supabase
+        .from("results")
+        .delete()
+        .not("id","is", null);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/history");
+    revalidatePath("/admin");
+}

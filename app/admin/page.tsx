@@ -16,6 +16,7 @@ import CreateAdvertisementForm from "@/components/CreateAdvertisementForm";
 import AdvertisementCard from "@/components/AdvertisementCard";
 import AdminAccordion from "@/components/AdminAccordion";
 import DeleteAllPredictionsButton from "@/components/DeleteAllPredictionsButton";
+import DeleteAllResultsButton from "@/components/DeleteAllResults";
 
 export default async function AdminPage() {
     await requireAdmin();
@@ -31,6 +32,11 @@ export default async function AdminPage() {
         .from("predictions")
         .select("*")
         .order("created_at", { ascending: false });
+
+    const { data: results } = await supabase
+        .from("results")
+        .select("*")
+        .order("kickoff_time", { ascending: false });
 
     const { data: settings } = 
         await supabase
@@ -67,6 +73,8 @@ export default async function AdminPage() {
     const conversionRate = uniqueVisitors > 0 ? (
         (telegramClicks / uniqueVisitors) * 100
     ).toFixed(1) : 0;
+
+    const totalResults = results?.length || 0;
     
     const total = predictions?.length || 0;
 
@@ -170,8 +178,9 @@ export default async function AdminPage() {
                             icon: "📝",
                             children: (
                                 <div className="space-y-5">
-                                    <div className="flex justify-end">
+                                    <div className="flex justify-between">
                                         <DeleteAllPredictionsButton total={total}/>
+                                        <DeleteAllResultsButton total={totalResults}/>
                                     </div>
                                     <PredictionTable predictions={predictions || []}/>
                                 </div>

@@ -21,9 +21,9 @@ export default function DeleteAllPredictionsButton({
     return (
         <button
             onClick={handleDelete}
-            className="rounded-xl bg-red-600 px-5 py-3 text-white font-semibold shadow hover:bg-red-700 disabled:opacity-50"
+            className="rounded-xl bg-orange-600 px-5 py-3 text-white font-semibold shadow hover:bg-orange-700 disabled:opacity-50"
         >
-            {isPending ? "Deleting..." : `🗑 Delete All (${total})`}
+            {isPending ? "Deleting..." : `🗑 Delete Predictions (${total})`}
         </button>
     )
 }
