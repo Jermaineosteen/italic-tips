@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Advertisement from "./Advertisement";
 
 export default function ResultsSummary({
@@ -6,47 +7,72 @@ export default function ResultsSummary({
     
     const total = won + lost + voided;
 
-    const winRate = total > 0 ? Math.round((won/total) * 100) : 0;
+    const winRate = won + lost > 0 ? Math.round((won / (won + lost)) * 100) : 0;
 
     return (
-        <section className="py-12">
-            <div className="max-w-7xl mx-auto px-4">
-                <h2 className="text-3xl font-bold mb-6">
-                    Recent Results
-                </h2>
-
-                <Advertisement position="history"/>
-
-                <div className="grid md:grid-cols-4 gap-4">
-                    <div className="border rounded-xl p-5">
-                        <p>Won</p>
-                        <h3 className="text-3xl font-bold">
-                            {won}
-                        </h3>
+        <section className="bg-slate-50 py-12">
+            <div className="max-w-6xl mx-auto px-6">
+                <div className="rounded-3xl bg-white border shadow-sm p-8">
+                    <div className="text-center mb-8">
+                        <h2 className="text-3xl font-bold text-slate-900">
+                            📊 Our Performance
+                        </h2>
+                        <p className="mt-3 text-slate-600">
+                            Our track record is fully transparent. Review our settled predictions and see how we've performed.
+                        </p>
                     </div>
 
-                    <div className="border rounded-xl p-5">
-                        <p>Lost</p>
-                        <h3 className="text-3xl font-bold">
-                            {lost}
-                        </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="rounded-2xl bg-emerald-50 p-6 text-center">
+                            <p className="text-sm text-slate-500">
+                                🏆 Win Rate
+                            </p>
+
+                            <p className="mt-2 text-3xl font-black text-emerald-600">
+                                {winRate}%
+                            </p>
+                        </div>
+
+                        <div className="rounded-2xl bg-green-50 p-6 text-center">
+                            <p className="text-sm text-slate-500">
+                                ✅ Won
+                            </p>
+
+                            <p className="mt-2 text-3xl font-black text-green-600">
+                                {won}
+                            </p>
+                        </div>
+
+                        <div className="rounded-2xl bg-red-50 p-6 text-center">
+                            <p className="text-sm text-slate-500">
+                                ❌ Lost
+                            </p>
+
+                            <p className="mt-2 text-3xl font-black text-red-600">
+                                {lost}
+                            </p>
+                        </div>
+
+                        <div className="rounded-2xl bg-cyan-50 p-6 text-center">
+                            <p className="text-sm text-slate-500">
+                                📈 Settled
+                            </p>
+
+                            <p className="mt-2 text-3xl font-black text-cyan-600">
+                                {total}
+                            </p>
+                        </div>
                     </div>
 
-                    <div className="border rounded-xl p-5">
-                        <p>Void</p>
-                        <h3 className="text-3xl font-bold">
-                            {voided}
-                        </h3>
-                    </div>
-
-                    <div className="border rounded-xl p-5">
-                        <p>Win Rate</p>
-                        <h3 className="text-3xl font-bold">
-                            {winRate}%
-                        </h3>
+                    <div className="mt-8 text-center">
+                        <Link
+                            href="/history"
+                            className="inline-flex items-center rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 px-8 py-4 font-semibold text-white shadow-lg hover:scale-105 transition"
+                        >
+                            View Full Results
+                        </Link>
                     </div>
                 </div>
-
             </div>
         </section>
     )

@@ -5,12 +5,11 @@ import { createClient } from "@/lib/supabase/server";
 export default async function HistoryPage() {
     const supabase = await createClient();
 
-    const { data } = 
+    const { data: results } = 
         await supabase
-            .from("predictions")
+            .from("results")
             .select("*")
-            .neq("status", "pending")
-            .order("created_at", {ascending: false});
+            .order("kickoff_time", {ascending: false})
 
     return (
         <div className="max-w-7xl mx-auto p-6">
@@ -18,9 +17,10 @@ export default async function HistoryPage() {
                 Results History
             </h1>
 
+            
              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {data?.map((prediction) => (
-                    <PredictionCard key={prediction.id} prediction={prediction}/>
+                {results?.map((result) => (
+                    <PredictionCard key={result.id} prediction={result}/>
                 ))}
              </div>
         </div>

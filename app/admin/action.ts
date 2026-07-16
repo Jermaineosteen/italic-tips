@@ -37,12 +37,63 @@ export async function createPrediction(formData: FormData) {
 export async function updateStatus(id:string, status: string) {
     const supabase = await createClient();
 
-    await supabase
+    const { data : { user }} = await supabase.auth.getUser();
+    if (!user) {
+        throw new Error("Unauthorized");
+    }
+
+    // Pending stays in prediciton
+    if (status === "pending") {
+        await supabase
+            .from("predictions")
+            .update({ status })
+            .eq("id", id);
+
+        revalidatePath("/");
+        revalidatePath("/admin");
+
+        return;
+    }
+    
+    // Get prediction
+    const {data: prediction, error} = await supabase
         .from("predictions")
-        .update({ status })
+        .select("*")
+        .eq("id", id)
+        .single();
+
+    if (error || !prediction) {
+        throw new Error("Predicition not found");
+    }
+
+    // Save into results
+    const { error: resultError } = await supabase
+        .from("results")
+        .insert({
+            match_name: prediction.match_name,
+            country: prediction.country,
+            prediction: prediction.prediction,
+            category: prediction.category,
+            kickoff_time: prediction.kickoff_time,
+            status
+        });
+    
+    if (resultError) {
+        throw new Error(resultError.message);
+    }
+
+    // Remove from predictions
+    const { error: deleteError } = await supabase
+        .from("predictions")
+        .delete()
         .eq("id", id);
 
+    if (deleteError) {
+        throw new Error(deleteError.message);
+    }
+
     revalidatePath("/");
+    revalidatePath("/history");
     revalidatePath("/admin");
 }
 
@@ -159,5 +210,27 @@ export async function deleteAllPredictions() {
 
     revalidatePath("/");
     revalidatePath("history");
+    revalidatePath("/admin");
+}
+
+export async function deleteAllResult() {
+    const supabase = await createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        throw new Error("Unauthorized")
+    }
+    
+    const { error } = await supabase
+        .from("results")
+        .delete()
+        .neq("id", "");
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/history")
     revalidatePath("/admin");
 }

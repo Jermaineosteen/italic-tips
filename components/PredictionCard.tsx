@@ -11,29 +11,6 @@ export default function PredictionCard({
     <div
       className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
     >
-      {/* <div className="flex items-start justify-between gap-3">
-        <div>
-          <h3
-            className="text-base font-semibold text-slate-900"
-          >
-            {prediction.match_name}
-          </h3>
-
-          <p
-            className="mt-2 text-sm text-slate-500"
-          >
-            {prediction.country}
-          </p>
-        </div>
-
-        {prediction.featured && (
-          <div
-            className="h-7 w-7 text-sm rounded-full bg-amber-100 flex items-center justify-center"
-          >
-            ⭐
-          </div>
-        )}
-      </div> */}
 
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
@@ -67,17 +44,16 @@ export default function PredictionCard({
           px-2.5
           py-1
           rounded-full
-          text-xs
           font-semibold
           capitalize
           ${
             prediction.status === "won"
-              ? "bg-green-100 text-green-700"
+              ? "bg-green-500 text-white text-lg"
               : prediction.status === "lost"
-              ? "bg-red-100 text-red-700"
+              ? "bg-red-100 text-red-700 text-xs"
               : prediction.status === "void"
-              ? "bg-yellow-100 text-yellow-700"
-              : "bg-slate-100 text-slate-700"
+              ? "bg-yellow-100 text-yellow-700 text-xs"
+              : "bg-slate-100 text-slate-700 text-xs"
           }
           `}
         >
@@ -105,18 +81,6 @@ export default function PredictionCard({
           {prediction.prediction}
         </p>
       </div>
-
-      {/* <div
-        className="
-        mt-3
-        flex
-        items-center
-        justify-between
-        "
-      >
-
-        
-      </div> */}
     </div>
   );
 }

@@ -5,7 +5,6 @@ import Hero from "@/components/Hero";
 import PredictionCard from "@/components/PredictionCard";
 import ResultsSummary from "@/components/ResultsSummary";
 import TelegramCTA from "@/components/TelegramCTA";
-import FeaturedPrediction from "@/components/FeaturedPredictions";
 
 import { createSupabaseServerClient } from "../lib/supabase-server";
 import { getSettings } from "@/lib/getSettings";
@@ -15,7 +14,6 @@ import CategoryFilter from "@/components/CategoryFilter";
 import VisitorTracker from "@/components/VisitorTracker";
 import JoinTelegramModal from "@/components/JoinTelegramModal";
 import Advertisement from "@/components/Advertisement";
-import Link from 'next/link';
 import Pagination from '@/components/Pagination';
 import ScrollToPredictions from '@/components/ScrollToPredictions';
 
@@ -60,16 +58,9 @@ export default async function Home({
 
   const totalPages = Math.ceil((count || 0) / pageSize);
 
-  const { data: featured } =
-    await createSupabaseServerClient()
-      .from("predictions")
-      .select("*")
-      .eq("featured", true)
-      .limit(6);
-
   const { data: results } =
     await createSupabaseServerClient()
-      .from("predictions")
+      .from("results")
       .select("status");
 
   const won =
@@ -102,20 +93,6 @@ export default async function Home({
       <JoinTelegramModal
         telegramUrl={settings.telegram_url}
       />
-
-      <FeaturedPrediction
-        predictions={featured || []}
-      />
-
-      <section className="bg-gray-50 py-12 md:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ResultsSummary
-            won={won}
-            lost={lost}
-            voided={voided}
-          />
-        </div>
-      </section>
 
       <section id="predictions" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="flex flex-col gap-4 mb-8 md:flex-row md:items-center md:justify-between">
@@ -184,6 +161,12 @@ export default async function Home({
       </section>
 
       <ScrollToPredictions/>
+
+      <ResultsSummary
+        won={won}
+        lost={lost}
+        voided={voided}
+      />
 
       <TelegramCTA telegramUrl={settings.telegram_url}/>
 
