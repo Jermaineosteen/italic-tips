@@ -256,3 +256,48 @@ export async function deleteAllResults() {
     revalidatePath("/history");
     revalidatePath("/admin");
 }
+
+export async function restorePrediction(id: string) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+        throw new Error("Unauthorized");
+    }
+    // get archived prediction
+    const { data: result, error } = await supabase
+        .from("results")
+        .select("*")
+        .eq("id", id)
+        .single();
+    if (error || !result) {
+        throw new Error("Result not found");
+    }
+    // insert back into predictions
+    const { error: predictionError } = await supabase
+        .from("predictions")
+        .insert({
+            match_name: result.match_name,
+            country: result.country,
+            prediction: result.prediction,
+            category: result.category,
+            kickoff_time: result.kickoff_time,
+            status: "pending",
+        });
+    
+    if (predictionError) {
+        throw new Error(predictionError.message);
+    }
+
+    // delete from results
+    const { error: deleteError } = await supabase
+        .from("results")
+        .delete()
+        .eq("id", id);
+    if (deleteError) {
+        throw new Error(deleteError.message);
+    }
+
+    revalidatePath("/");
+    revalidatePath("/history");
+    revalidatePath("/admin");
+}

@@ -1,85 +1,135 @@
 import Image from "next/image";
 
-import { deleteAdvertisement, toggleAdvertisement } from "@/app/actions/advertisement";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+import {
+  deleteAdvertisement,
+  toggleAdvertisement,
+} from "@/app/actions/advertisement";
 
 type Advertisement = {
-    id: string;
-    title: string;
-    image_url: string;
-    target_url: string;
-    position: string;
-    priority: number;
-    active: boolean;
-}
+  id: string;
+  title: string;
+  image_url: string;
+  target_url: string;
+  position: string;
+  priority: number;
+  active: boolean;
+};
 
 interface Props {
-    advertisement: Advertisement;
+  advertisement: Advertisement;
 }
 
-export default function AdvertisementCard({advertisement}: Props) {
-    return (
-        <div className="rounded-3xl bg-white border shadow-sm overflow-hidden">
-            <Image
-                src={advertisement.image_url}
-                alt={advertisement.title}
-                width={600}
-                height={240}
-                className="w-full h-40 object-cover"
-            />
+export default function AdvertisementCard({
+  advertisement,
+}: Props) {
+  return (
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl">
 
-            <div className="p-5 space-y-3">
-                <div className="flex justify-between">
-                    <h3 className="font-bold text-lg">
-                        {advertisement.title}
-                    </h3>
-                    <span
-                        className={`
-                            px-3 py-1 rounded-full text-xs font-semibold
-                            ${advertisement.active}
-                            ? "bg-emerald-100 text-emerald-700"
-                            : "bg-red-100 text-red-700"
-                            `
-                    }
-                    >
-                        {advertisement.active ? "Active" : "Inactive"}
-                    </span>
-                </div>
+      <div className="relative h-44 w-full">
+        <Image
+          src={advertisement.image_url}
+          alt={advertisement.title}
+          fill
+          className="object-cover"
+        />
+      </div>
 
-                <p className="text-sm text-slate-500">
-                    Position: {advertisement.position}
-                </p>
+      <CardContent className="space-y-4 pt-5">
 
-                <p className="text-sm text-slate-500">
-                    Priority: {advertisement.priority}
-                </p>
+        <div className="flex items-start justify-between gap-3">
 
-                <div className="grid grid-cols-2 gap-3">
-                    <form action={async () => {
-                        "use server";
-                        await toggleAdvertisement(
-                            advertisement.id,
-                            advertisement.active
-                        );
-                    }}>
-                        <button
-                            className="w-full rounded-xl bg-emerald-500 text-white py-2"
-                        >
-                            {advertisement.active ? "Disable" : "Enable"}
-                        </button>
-                    </form>
+          <h3 className="text-lg font-bold">
+            {advertisement.title}
+          </h3>
 
-                    <form action={async () => {
-                        "use server";
-                        await deleteAdvertisement(advertisement.id);
-                    }}>
-                        <button
-                            className="w-full rounded-xl bg-red-500 text-white py-2"
-                        >
-                            Delete
-                        </button>
-                    </form>
-                </div>
-            </div>
+          <Badge
+            variant={
+              advertisement.active
+                ? "default"
+                : "destructive"
+            }
+          >
+            {advertisement.active
+              ? "Active"
+              : "Inactive"}
+          </Badge>
+
         </div>
-    )
+
+        <div className="space-y-2 text-sm text-muted-foreground">
+
+          <div className="flex justify-between">
+            <span>Position</span>
+            <span className="font-medium text-foreground">
+              {advertisement.position}
+            </span>
+          </div>
+
+          <div className="flex justify-between">
+            <span>Priority</span>
+            <span className="font-medium text-foreground">
+              #{advertisement.priority}
+            </span>
+          </div>
+
+        </div>
+
+      </CardContent>
+
+      <CardFooter className="grid grid-cols-2 gap-3">
+
+        <form
+          action={async () => {
+            "use server";
+
+            await toggleAdvertisement(
+              advertisement.id,
+              advertisement.active
+            );
+          }}
+        >
+          <Button
+            className="w-full"
+            variant={
+              advertisement.active
+                ? "secondary"
+                : "default"
+            }
+          >
+            {advertisement.active
+              ? "Disable"
+              : "Enable"}
+          </Button>
+        </form>
+
+        <form
+          action={async () => {
+            "use server";
+
+            await deleteAdvertisement(
+              advertisement.id
+            );
+          }}
+        >
+          <Button
+            className="w-full"
+            variant="destructive"
+          >
+            Delete
+          </Button>
+        </form>
+
+      </CardFooter>
+
+    </Card>
+  );
 }

@@ -1,11 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { getSettings } from "@/lib/getSettings";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Advertisement from "@/components/Advertisement";
+import { Toaster } from "sonner";
+import { cn } from "@/lib/utils";
 
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -97,13 +100,15 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
     >
       <body className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 via-white to-slate-100 text-slate-900">
         <Navbar telegramUrl={settings.telegram_url}/>
         <main className="flex-1">
           {children}
         </main>
+
+        <Toaster richColors position="top-right" />
 
         <Advertisement position="before_footer"/>
         <Footer title={settings.site_title} description={settings.hero_subtitle}/>
